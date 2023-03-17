@@ -128,7 +128,7 @@ retry:
   size_t avail = stream->available();
   if (!nonBlock && !avail) {
     cb.st(STATUS_NODATA, PSTR("No stream data available"));
-    http.end();
+     http.end();
     goto retry;
   }
   if (avail == 0) return 0;

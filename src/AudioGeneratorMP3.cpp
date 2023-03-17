@@ -248,10 +248,6 @@ retry:
       running = false;
       goto done;
     }
-    if (lastChannels == 1)
-    {
-      lastSample[1] = lastSample[0];
-    }
   } while (running && output->ConsumeSample(lastSample));
 
 done:
@@ -388,7 +384,7 @@ extern "C" {
       if (freeheap < 1024) {
         audioLogger->printf_P(PSTR("out of heap!\n"));
       }
-      Serial.flush();
+      audioLogger->flush();
       laststack = freestack;
       lastheap = freeheap;
     }

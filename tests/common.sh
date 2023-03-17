@@ -109,18 +109,14 @@ if [ "$BUILD_TYPE" = "build" ]; then
     install_arduino
     install_esp8266 "$HOME/arduino_ide"
     source "$HOME/arduino_ide/hardware/esp8266com/esp8266/tests/common.sh"
-    export ESP8266_ARDUINO_SKETCHES=$(find $HOME/Arduino/libraries/ESP8266Audio -name *.ino | sort)
-    # ESP8266 scripts now expect tools in wrong spot.  Use simple and dumb fix
-    mkdir -p "$HOME/work/ESP8266Audio/ESP8266Audio"
-    ln -s "$HOME/arduino_ide/hardware/esp8266com/esp8266/tools" "$HOME/work/ESP8266Audio/ESP8266Audio/tools"
-    build_sketches "$TRAVIS_BUILD_DIR" "$HOME/arduino_ide" "$HOME/arduino_ide/hardware" "$HOME/Arduino/libraries" "$BUILD_MOD" "$BUILD_REM" "lm2f"
+    build_sketches "$HOME/arduino_ide" "$TRAVIS_BUILD_DIR" "-l $HOME/Arduino/libraries" "$BUILD_MOD" "$BUILD_REM" "lm2f"
 elif [ "$BUILD_TYPE" = "build_esp32" ]; then
     install_arduino
     install_esp32 "$HOME/arduino_ide"
     export FQBN="espressif:esp32:esp32:PSRAM=enabled,PartitionScheme=huge_app"
     mkdir -p "$GITHUB_WORKSPACE/hardware"
     ln -s "$GITHUB_WORKSPACE/../" "$GITHUB_WORKSPACE/libraries"
-    source "$HOME/arduino_ide/hardware/espressif/esp32/.github/scripts/sketch_utils.sh" chunk_build -ai "$HOME/arduino_ide" -au "$GITHUB_WORKSPACE" -fqbn "$FQBN" -t esp32 -p "$GITHUB_WORKSPACE" -i $BUILD_REM -m $BUILD_MOD
+    source "$HOME/arduino_ide/hardware/espressif/esp32/.github/scripts/sketch_utils.sh" chunk_build "$HOME/arduino_ide" "$GITHUB_WORKSPACE" "$FQBN" esp32 "$GITHUB_WORKSPACE" $BUILD_REM $BUILD_MOD
 elif [ "$BUILD_TYPE" = "build_rp2040" ]; then
     install_arduino
     install_rp2040 "$HOME/arduino_ide"
